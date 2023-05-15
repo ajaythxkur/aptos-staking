@@ -34,3 +34,13 @@ body{
 .wallet-btn{
     color:var(--white);
 }
+
+.account-info .form-control{
+    background-color: transparent;
+    color: var(--white);
+    outline: unset;
+    box-shadow: none;
+}
+.account-info .input-group-text{
+    background-color: transparent;
+}

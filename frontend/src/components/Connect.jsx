@@ -1,34 +1,53 @@
-import React from 'react'
-
-const Connect = () => {
+import React, {useState} from 'react'
+import toast from '../common/toast.js';
+import {sleep} from "../common/helper.js";
+const Connect = ({setisConnected}) => {
     const supportedWallet = [
         {
             name:"martian",
             key:"martian"
         },
-        {
-            name:"rise",
-            key:"rise"
-        }
+        // {
+        //     name:"rise",
+        //     key:"rise"
+        // }
     ];
     const TYPE_WALLET = {
         "martian": () => martianConn(),
-        "rise": () => riseConn()
+        // "rise": () => riseConn()
     }
+    const [loading, setLoading] = useState(false)
     async function martianConn(){
         if (!("martian" in window)) {
             window.open("https://www.martianwallet.xyz/", "_blank");
             return
         }
+        setLoading(true)
         try{
             await window.martian.connect();
+            let check = await window.martian.isConnected()
+            if(!check){
+                return
+            }
         }catch(err){
-            console.log(err)
+            setLoading(false)
+            toast.normal(err)
+            return
         }
+
+        let acc = await window.martian.account();
+        Object.assign(acc, {wallet: "martian"});
+        localStorage.setItem('account', JSON.stringify(acc));
+        console.log("sleeping")
+        await sleep(1500) //1.5 sec
+        document.getElementById("connect-btn-close").click();
+        setisConnected(true)
+        setLoading(false)
+        console.log("woke up")
     }
-    async function riseConn(){
-        console.log("rise")
-    }
+    // async function riseConn(){
+    //     console.log("rise")
+    // }
 
 
 
@@ -52,9 +71,18 @@ const Connect = () => {
                         </div>
                         <div className="modal-body py-3">
                             {supportedWallet.map((v,i)=>(
-                                <button className='btn text-uppercase border rounded-0 w-100 mb-2 wallet-btn' key={i} onClick={TYPE_WALLET[v.key]}>
-                                    {v.name}&nbsp;wallet
-                                </button>
+                                <React.Fragment key={i}>
+                                {loading ? 
+                                    <button className="btn text-uppercase border rounded-0 w-100 mb-2 wallet-btn" type="button" disabled>
+                                    <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                    Loading...
+                                  </button>
+                                  :
+                                  <button className='btn text-uppercase border rounded-0 w-100 mb-2 wallet-btn'  onClick={TYPE_WALLET[v.key]}>
+                                  {v.name}&nbsp;wallet
+                                  </button>
+                                }
+                                </React.Fragment>
                             ))}
                         </div>
                     </div>
