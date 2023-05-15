@@ -1,0 +1,36 @@
+*{
+    margin:0;
+    padding:0;
+}
+@font-face {
+    font-family: Gruppo;
+    src: url('../font/Gruppo/Gruppo-Regular.ttf');
+}
+:root{
+    --black:#000;
+    --white:#FFF;
+    --black-2:#0C0B0B;
+}
+body{
+    font-family: Gruppo;
+    background-color:var(--black);
+    color:var(--white);
+}
+.connect-sec{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+}
+.connect-btn{
+    color:var(--white);
+}
+#connect-modal .modal-content{
+    background-color: var(--black-2);
+    color: var(--white);
+}
+#connect-btn-close{
+    color:var(--white);
+}
+.wallet-btn{
+    color:var(--white);
+}
