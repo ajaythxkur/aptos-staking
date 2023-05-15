@@ -1,5 +1,3 @@
 "# aptos-staking" 
 
-FrontEnd
-Go To frontend directory
-npm i & then npm run dev
+To run Frontend : Go To frontend directory - npm i & then npm run dev
